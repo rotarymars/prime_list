@@ -5,6 +5,7 @@
 #include <regex>
 #include <vector>
 #include <algorithm>
+#include <sys/resource.h>
 #define _DEBUG
 
 using boost::multiprecision::cpp_int;
@@ -58,17 +59,23 @@ int main() {
     primesmaxint = primes.back();
     ++primesmaxint;
   }
+  constexpr int operation_count = 1;
+  for (int i = 0; i < operation_count; ++i) {
+    std::ofstream outfile(path + std::to_string(++filecntmax) + ".txt");
+    long long insertcnt = 0;
 
-  std::ofstream outfile(path + std::to_string(filecntmax + 1) + ".txt");
-  long long insertcnt = 0;
-
-  while (insertcnt < PRIME_COUNT) {
-    if (isPrime(primesmaxint, primes)) {
-      outfile << primesmaxint << '\n';
-      primes.push_back(primesmaxint);
-      ++insertcnt;
+    while (insertcnt < PRIME_COUNT) {
+      if (isPrime(primesmaxint, primes)) {
+        outfile << primesmaxint << '\n';
+        primes.push_back(primesmaxint);
+        ++insertcnt;
+      }
+      ++primesmaxint;
     }
-    ++primesmaxint;
   }
+  // Get peak memory usage (in GB)
+  struct rusage usage;
+  getrusage(RUSAGE_SELF, &usage);
+  std::cout << "Peak memory usage: " << (usage.ru_maxrss / 1024.0 / 1024.0) << " GB" << std::endl;
 }
 
