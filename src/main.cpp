@@ -1,28 +1,24 @@
+#include <sys/resource.h>
+
+#include <algorithm>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <regex>
 #include <vector>
-#include <algorithm>
-#include <sys/resource.h>
-#include <chrono>
 #define _DEBUG
 
 using boost::multiprecision::cpp_int;
 
 bool isPrime(const cpp_int& n, const std::vector<cpp_int>& primes) {
-  if (n <= 1)
-    return false;
-  if (n == 2 || n == 3)
-    return true;
-  if (n % 2 == 0 || n % 3 == 0)
-    return false;
+  if (n <= 1) return false;
+  if (n == 2 || n == 3) return true;
+  if (n % 2 == 0 || n % 3 == 0) return false;
   for (const auto& prime : primes) {
-    if (prime * prime > n)
-      return true;
-    if (n % prime == 0)
-      return false;
+    if (prime * prime > n) return true;
+    if (n % prime == 0) return false;
   }
   return true;
 }
@@ -57,26 +53,20 @@ int main() {
   });
   for (const auto& filename : filenames) {
     std::ifstream infile(path + filename);
-      filecntmax = std::max(filecntmax, std::stoll(match[1]));
-      std::ifstream infile(path + filename);
+    filecntmax = std::max(filecntmax, std::stoll(match[1]));
+    std::ifstream infile(path + filename);
 #ifdef _DEBUG
-      std::cout << "Reading " << filename << std::endl;
+    std::cout << "Reading " << filename << std::endl;
 #endif
-      std::string line;
-      while (std::getline(infile, line)) {
-        cpp_int prime(line);
-        primes.push_back(prime);
-      }
+    std::string line;
+    while (std::getline(infile, line)) {
+      cpp_int prime(line);
+      primes.push_back(prime);
     }
   }
   auto end_time = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
   std::cout << "Reading " << filecntmax << " files completed in " << duration.count() << " seconds" << std::endl;
-  start_time = std::chrono::high_resolution_clock::now();
-  std::sort(primes.begin(), primes.end());
-  end_time = std::chrono::high_resolution_clock::now();
-  duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
-  std::cout << "Sorting " << primes.size() << " primes completed in " << duration.count() << " seconds" << std::endl;
   if (!primes.empty()) {
     primesmaxint = primes.back();
     ++primesmaxint;
@@ -84,7 +74,7 @@ int main() {
   constexpr int operation_count = 3;
   for (int i = 0; i < operation_count; ++i) {
     start_time = std::chrono::high_resolution_clock::now();
-    
+
     std::ofstream outfile(path + std::to_string(++filecntmax) + ".txt");
     long long insertcnt = 0;
 
@@ -96,7 +86,7 @@ int main() {
       }
       ++primesmaxint;
     }
-    
+
     end_time = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
     std::cout << "Operation " << (i + 1) << " completed in " << duration.count() << " seconds" << std::endl;
@@ -106,4 +96,3 @@ int main() {
   getrusage(RUSAGE_SELF, &usage);
   std::cout << "Peak memory usage: " << (usage.ru_maxrss / 1024.0 / 1024.0) << " GB" << std::endl;
 }
-
