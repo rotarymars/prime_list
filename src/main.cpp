@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <sys/resource.h>
+#include <chrono>
 #define _DEBUG
 
 using boost::multiprecision::cpp_int;
@@ -37,7 +38,7 @@ int main() {
   std::regex number_pattern(R"((\d+)\.txt$)");
   long long filecntmax = -1;
   cpp_int primesmaxint = 2;
-
+  auto start_time = std::chrono::high_resolution_clock::now();
   for (const auto& entry : std::filesystem::directory_iterator(path)) {
     std::string filename = entry.path().filename().string();
     std::smatch match;
@@ -54,6 +55,9 @@ int main() {
       }
     }
   }
+  auto end_time = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
+  std::cout << "Reading " << filecntmax << " files completed in " << duration.count() << " seconds" << std::endl;
   std::sort(primes.begin(), primes.end());
   if (!primes.empty()) {
     primesmaxint = primes.back();
@@ -61,6 +65,8 @@ int main() {
   }
   constexpr int operation_count = 3;
   for (int i = 0; i < operation_count; ++i) {
+    auto start_time = std::chrono::high_resolution_clock::now();
+    
     std::ofstream outfile(path + std::to_string(++filecntmax) + ".txt");
     long long insertcnt = 0;
 
@@ -72,6 +78,10 @@ int main() {
       }
       ++primesmaxint;
     }
+    
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
+    std::cout << "Operation " << (i + 1) << " completed in " << duration.count() << " seconds" << std::endl;
   }
   // Get peak memory usage (in GB)
   struct rusage usage;
