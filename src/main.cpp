@@ -58,14 +58,18 @@ int main() {
   auto end_time = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
   std::cout << "Reading " << filecntmax << " files completed in " << duration.count() << " seconds" << std::endl;
+  start_time = std::chrono::high_resolution_clock::now();
   std::sort(primes.begin(), primes.end());
+  end_time = std::chrono::high_resolution_clock::now();
+  duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
+  std::cout << "Sorting " << primes.size() << " primes completed in " << duration.count() << " seconds" << std::endl;
   if (!primes.empty()) {
     primesmaxint = primes.back();
     ++primesmaxint;
   }
   constexpr int operation_count = 3;
   for (int i = 0; i < operation_count; ++i) {
-    auto start_time = std::chrono::high_resolution_clock::now();
+    start_time = std::chrono::high_resolution_clock::now();
     
     std::ofstream outfile(path + std::to_string(++filecntmax) + ".txt");
     long long insertcnt = 0;
@@ -79,8 +83,8 @@ int main() {
       ++primesmaxint;
     }
     
-    auto end_time = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
+    end_time = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
     std::cout << "Operation " << (i + 1) << " completed in " << duration.count() << " seconds" << std::endl;
   }
   // Get peak memory usage (in GB)
