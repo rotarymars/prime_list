@@ -24,9 +24,9 @@ bool isPrime(const cpp_int& n, const std::vector<cpp_int>& primes) {
 }
 
 int main() {
-  const long long PRIME_COUNT = 1000000;
+  constexpr long long PRIME_COUNT = 1000000;
   std::vector<cpp_int> primes;
-  constexpr std::string path = "data/";
+  const std::string path = "data/";
   if (!std::filesystem::exists(path)) {
     std::filesystem::create_directory(path);
   }
