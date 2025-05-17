@@ -43,7 +43,7 @@ int main() {
       filenames.push_back(filename);
     }
   }
-  std::sort(filenames.begin(), filenames.end(), [](const std::string& a, const std::string& b) {
+  std::sort(filenames.begin(), filenames.end(), [&](const std::string& a, const std::string& b) {
     std::smatch match;
     std::regex_search(a, match, number_pattern);
     int a_num = std::stoi(match[1]);
