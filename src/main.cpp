@@ -53,8 +53,6 @@ int main() {
   });
   for (const auto& filename : filenames) {
     std::ifstream infile(path + filename);
-    filecntmax = std::max(filecntmax, std::stoll(match[1]));
-    std::ifstream infile(path + filename);
 #ifdef _DEBUG
     std::cout << "Reading " << filename << std::endl;
 #endif
