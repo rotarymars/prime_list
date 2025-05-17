@@ -30,7 +30,7 @@ bool isPrime(const cpp_int& n, const std::vector<cpp_int>& primes) {
 int main() {
   constexpr long long PRIME_COUNT = 1000000;
   std::vector<cpp_int> primes;
-  std::string path = "data/";
+  constexpr std::string path = "data/";
   if (!std::filesystem::exists(path)) {
     std::filesystem::create_directory(path);
   }
@@ -39,10 +39,24 @@ int main() {
   long long filecntmax = -1;
   cpp_int primesmaxint = 2;
   auto start_time = std::chrono::high_resolution_clock::now();
+  std::vector<std::string> filenames;
   for (const auto& entry : std::filesystem::directory_iterator(path)) {
     std::string filename = entry.path().filename().string();
     std::smatch match;
     if (std::regex_search(filename, match, number_pattern)) {
+      filenames.push_back(filename);
+    }
+  }
+  std::sort(filenames.begin(), filenames.end(), [](const std::string& a, const std::string& b) {
+    std::smatch match;
+    std::regex_search(a, match, number_pattern);
+    int a_num = std::stoi(match[1]);
+    std::regex_search(b, match, number_pattern);
+    int b_num = std::stoi(match[1]);
+    return a_num < b_num;
+  });
+  for (const auto& filename : filenames) {
+    std::ifstream infile(path + filename);
       filecntmax = std::max(filecntmax, std::stoll(match[1]));
       std::ifstream infile(path + filename);
 #ifdef _DEBUG
