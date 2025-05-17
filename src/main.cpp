@@ -59,7 +59,7 @@ int main() {
     primesmaxint = primes.back();
     ++primesmaxint;
   }
-  constexpr int operation_count = 10;
+  constexpr int operation_count = 3;
   for (int i = 0; i < operation_count; ++i) {
     std::ofstream outfile(path + std::to_string(++filecntmax) + ".txt");
     long long insertcnt = 0;
