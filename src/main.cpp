@@ -41,6 +41,7 @@ int main() {
     std::smatch match;
     if (std::regex_search(filename, match, number_pattern)) {
       filenames.push_back(filename);
+      filecntmax = std::max(filecntmax, match[1]);
     }
   }
   std::sort(filenames.begin(), filenames.end(), [&](const std::string& a, const std::string& b) {
