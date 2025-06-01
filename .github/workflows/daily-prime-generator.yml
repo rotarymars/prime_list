@@ -13,11 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Create swap in /mnt
-        run: |
-          sudo fallocate -l 8G /mnt/swapfile
-          sudo mkswap /mnt/swapfile
-          sudo swapon /mnt/swapfile
+      - name: Create swap
+        uses: pierotofy/set-swap-space@v1.0
+        with:
+          swap-size-gb: 8
 
       - name: Install dependencies
         run: |
