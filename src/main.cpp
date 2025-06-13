@@ -1,5 +1,5 @@
 #include <sys/resource.h>
-
+#define BOOST_TIMER_ENABLE_DEPRECATED
 #include <algorithm>
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/progress.hpp>
