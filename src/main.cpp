@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <boost/progress.hpp>
 #include <chrono>
 #include <filesystem>
 #include <fstream>
@@ -76,12 +77,13 @@ int main() {
 
     std::ofstream outfile(path + std::to_string(++filecntmax) + ".txt");
     long long insertcnt = 0;
-
+    boost::progress_display progress(PRIME_COUNT);
     while (insertcnt < PRIME_COUNT) {
       if (isPrime(primesmaxint, primes)) {
         outfile << primesmaxint << '\n';
         primes.push_back(primesmaxint);
         ++insertcnt;
+        ++progress;
       }
       ++primesmaxint;
     }
