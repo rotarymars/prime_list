@@ -71,7 +71,7 @@ int main() {
     primesmaxint = primes.back();
     ++primesmaxint;
   }
-  constexpr int operation_count = 1;
+  constexpr int operation_count = 10;
   for (int i = 0; i < operation_count; ++i) {
     start_time = std::chrono::high_resolution_clock::now();
 
